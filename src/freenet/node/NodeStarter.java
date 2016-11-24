@@ -36,7 +36,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
  *  @author nextgens
  *
  *  A class to tie the wrapper and the node (needed for self-restarting support).
- *  
+ *
  *  There will only ever be one instance of NodeStarter.
  */
 public class NodeStarter implements WrapperListener {
@@ -70,7 +70,7 @@ public class NodeStarter implements WrapperListener {
 		else
 			throw new IllegalStateException();
 	}
-	
+
 	/*---------------------------------------------------------------
 	 * Constructors
 	 *-------------------------------------------------------------*/
@@ -260,14 +260,14 @@ public class NodeStarter implements WrapperListener {
 	 *-------------------------------------------------------------*/
 	public static void main(String[] args) {
 		// Immediately try entering background mode. This way also class
-		//  loading will be subject to reduced priority. 
+		//  loading will be subject to reduced priority.
 		ProcessPriority.enterBackgroundMode();
-		
+
 		// Start the application.  If the JVM was launched from the native
 		//  Wrapper then the application will wait for the native Wrapper to
 		//  call the application's start method.  Otherwise the start method
 		//  will be called immediately.
-		WrapperManager.start(new NodeStarter(), args);
+		new NodeStarter().start(args);
 	}
 
 	static SemiOrderedShutdownHook shutdownHook;
@@ -302,7 +302,7 @@ public class NodeStarter implements WrapperListener {
      *            - Unlike Yarrow, it won't block startup waiting for entropy.<br>
      *            - It allows you to specify a seed which you then can print to stdout so randomized
      *               unit tests are reproducible.<br>
-     *            - It should be a lot faster than Yarrow.<br> 
+     *            - It should be a lot faster than Yarrow.<br>
      * @return If you passed a {@link RandomSource}, the same one is returned. Otherwise, a new
      *         {@link Yarrow} is returned.
 	 */
@@ -391,7 +391,7 @@ public class NodeStarter implements WrapperListener {
 	}
 
     /**
-     * TODO FIXME: Someone who understands all the parameters please add sane defaults. 
+     * TODO FIXME: Someone who understands all the parameters please add sane defaults.
      */
     public static final class TestNodeParameters {
         /** The UDP port number. Each test node must have a different port number. */
@@ -480,7 +480,7 @@ public class NodeStarter implements WrapperListener {
         params.useSlashdotCache = useSlashdotCache;
         params.ipAddressOverride = ipAddressOverride;
         params.enableFCP = enableFCP;
-            
+
         return createTestNode(params);
     }
 
@@ -490,10 +490,10 @@ public class NodeStarter implements WrapperListener {
 	 * likely a config problem.
 	 */
     public static Node createTestNode(TestNodeParameters params) throws NodeInitException {
-		
+
 		synchronized(NodeStarter.class) {
-			if((!isStarted) || (!isTestingVM)) 
-				throw new IllegalStateException("Call globalTestInit() first!"); 
+			if((!isStarted) || (!isTestingVM))
+				throw new IllegalStateException("Call globalTestInit() first!");
 		}
 
         File baseDir = params.baseDirectory;
@@ -606,8 +606,8 @@ public class NodeStarter implements WrapperListener {
 			return -1; // Seems unlikely. FIXME 2TB limit!
 		return limit;
 	}
-	
-	/** Get the memory limit in bytes. Return -1 if we don't know. Compensate for odd JVMs' 
+
+	/** Get the memory limit in bytes. Return -1 if we don't know. Compensate for odd JVMs'
 	 * behaviour. */
 	public static long getMemoryLimitBytes() {
 		long maxMemory = Runtime.getRuntime().maxMemory();
@@ -631,10 +631,10 @@ public class NodeStarter implements WrapperListener {
 		Properties wrapperProperties = WrapperManager.getProperties();
 		return !JVMVersion.is32Bit() && !wrapperProperties.getProperty("wrapper.java.additional.auto_bits").startsWith("32");
 	}
-	
+
 	/** Static instance of SecureRandom, as opposed to Node's copy. @see getSecureRandom() */
     private static SecureRandom globalSecureRandom;
-	
+
 	public static synchronized SecureRandom getGlobalSecureRandom() {
 	    if(globalSecureRandom == null) {
 	        globalSecureRandom = new SecureRandom();

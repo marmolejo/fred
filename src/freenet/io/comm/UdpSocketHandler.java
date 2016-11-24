@@ -320,7 +320,7 @@ public class UdpSocketHandler implements PrioRunnable, PacketSocketHandler, Port
 			}
 		}
 		if (_dropProbability > 0) {
-			if (dropRandom.nextInt() % _dropProbability == 0) {
+			if (dropRandom.nextInt(_dropProbability) == 0) {
 				Logger.normal(this, "DROPPED: " + _sock.getLocalPort() + " -> " + destination.getPort());
 				return;
 			}
@@ -365,7 +365,7 @@ public class UdpSocketHandler implements PrioRunnable, PacketSocketHandler, Port
 	public static final int MIN_MTU = MIN_IPv4_MTU;
 
 	private volatile int maxPacketSize = MAX_ALLOWED_MTU;
-	
+
 	/**
 	 * @return The maximum packet size supported by this SocketManager, not including transport (UDP/IP) headers.
 	 */
@@ -382,7 +382,7 @@ public class UdpSocketHandler implements PrioRunnable, PacketSocketHandler, Port
 			System.out.println("Max packet size: "+newSize);
 		return maxPacketSize;
 	}
-	
+
 	/** Recalculate the maximum packet size */
 	int innerCalculateMaxPacketSize() { //FIXME: what about passing a peerNode though and doing it on a per-peer basis? How? PMTU would require JNI, although it might be worth it...
 		final int minAdvertisedMTU = node.getMinimumMTU();
